@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  version: "0.0-oas3"
+  title: lab5 get data demo
+  description: A simple service to get data from a cloud storage service
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: REST Service Example to get data
+  license:
+    name: Apache
+paths:
+  /data/saveas/<output>:
+    get:
+      tags:
+        - DATA
+      operationId: py_scrips.gatherData.download
+      description: Downloads data from url
+      responses:
+        '200':
+          description: Data info
+          content:
+            application/json:
+              schema: {}
+  /general_info/filename/<filename>:
+    get:
+      tags:
+        - DATA
+      operationId: py_scrips.svm.info
+      description: describes the general info about dataset
+      responses:
+        '200':
+          description: Data info
+          content:
+            application/json:
+              schema: {}
+  /experiment/svm/filename/<filename>/train/<trainingSize>:
+    get:
+      tags:
+        - DATA
+      operationId: py_scrips.svm.svm_gen
+      description: trains and tests data
+      responses:
+        '200':
+          description: Data info
+          content:
+            application/json:
+              schema: {}
+  /experiment/cof_matrix/filename/<filename>:
+    get:
+      tags:
+        - DATA
+      operationId: py_scrips.svm.gen_cof_mat
+      description: plots coef matrix
+      responses:
+        '200':
+          description: Data info
+          content:
+            application/json:
+              schema: {}
+
+servers:
+  - url: 'http://localhost:8080/final'
