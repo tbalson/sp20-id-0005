@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /experiment/svm/filename/<filename>/train/<trainingSize>:
+  /experiment/svm/filename/<filename>/train/<trainingSize>/kernel/<kval>/C/<cval>/gamma/<gval>/:
     get:
       tags:
         - DATA

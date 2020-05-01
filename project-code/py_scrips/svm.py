@@ -39,7 +39,7 @@ def info(filename):
     
     return ["total dataset size: "+str(n_samples),"features:"+str(n_features),"classes:"+str(n_classes)]
 
-def svm_gen(filename, trainingSize):
+def svm_gen(filename,trainingSize,cval,gval,kval):
     place = code_dir+"/../savedFiles/"+str(filename)
     file_of_faces_pkl = open(place, 'rb')
     lfw_people = pickle.load(file_of_faces_pkl)
@@ -62,11 +62,8 @@ def svm_gen(filename, trainingSize):
     X_train_pca = pca.transform(X_train)
     X_test_pca = pca.transform(X_test)
     # train a SVM classification model
-    param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
-              'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1], }
-    clf = GridSearchCV(
-    SVC(kernel='rbf', class_weight='balanced'), param_grid
-    )
+    clf = SVC(kernel=kval, class_weight='balanced', C = float(cval), gamma = float(gval))
+
     clf = clf.fit(X_train_pca, y_train)
     y_pred = clf.predict(X_test_pca)
     report = classification_report(y_test, y_pred, target_names=target_names)
@@ -95,10 +92,11 @@ def gen_cof_mat(filename):
     x = lfw_people.data
     y = lfw_people.target
     class_names = lfw_people.target_names
-    X_train, X_test, y_train, y_test = train_test_split(x, y)
+    X_train, X_test, y_train, y_test = train_test_split(x, y,train_size=.8)
     c_value = .1
     kernel_val = "linear"
-    classifier = SVC(kernel=kernel_val, C = c_value)
+    gval = .01
+    classifier = SVC(kernel=kernel_val, C = c_value,gamma = gval)
     y_pred = classifier.fit(X_train, y_train).predict(X_test)
     np.set_printoptions(precision=2)
     # Plot non-normalized confusion matrix
